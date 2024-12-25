@@ -4,11 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
 class MemoryBoardAdapter(private val context: Context, private val numPieces: Int) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
+        companion object {
+            private const val MARGIN_SIZE = 10
+        }
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
      * an item.
@@ -33,7 +38,14 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
      * @see .onBindViewHolder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val cardWidth = parent.width / 2 - (2 * MARGIN_SIZE)
+        val cardHeight = parent.height / 4 - (2 * MARGIN_SIZE)
+        val cardSideLength = minOf(cardWidth, cardHeight)
         val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
+        val layoutParams = view.findViewById<CardView>(R.id.cardView).layoutParams as MarginLayoutParams
+        layoutParams.width = cardSideLength
+        layoutParams.height = cardSideLength
+        layoutParams.setMargins(MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE)
         return ViewHolder(view)
     }
 
