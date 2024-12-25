@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.arindam.androidmemorygame"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.arindam.androidmemorygame"
