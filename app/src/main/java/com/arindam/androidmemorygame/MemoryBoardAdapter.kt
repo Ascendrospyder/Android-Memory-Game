@@ -1,18 +1,22 @@
 package com.arindam.androidmemorygame
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.arindam.androidmemorygame.models.BoardSize
 
-class MemoryBoardAdapter(private val context: Context, private val numPieces: Int) :
+class MemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
         companion object {
             private const val MARGIN_SIZE = 10
+            private const val TAG = "MemoryBoardAdapter"
         }
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
@@ -38,8 +42,8 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
      * @see .onBindViewHolder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardWidth = parent.width / 2 - (2 * MARGIN_SIZE)
-        val cardHeight = parent.height / 4 - (2 * MARGIN_SIZE)
+        val cardWidth = parent.width / boardSize.getWidth() - (2 * MARGIN_SIZE)
+        val cardHeight = parent.height / boardSize.getHeight() - (2 * MARGIN_SIZE)
         val cardSideLength = minOf(cardWidth, cardHeight)
         val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
         val layoutParams = view.findViewById<CardView>(R.id.cardView).layoutParams as MarginLayoutParams
@@ -54,7 +58,7 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount() = numPieces
+    override fun getItemCount() = boardSize.numCards
 
     /**
      * Called by RecyclerView to display the data at the specified position. This method should
@@ -82,8 +86,13 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
+
         fun bind(position: Int) {
-            // No-op
+            // Setting an event listener when we click this button
+            imageButton.setOnClickListener {
+                Log.i(TAG, "Clicked on position $position")
+            }
         }
     }
 }
